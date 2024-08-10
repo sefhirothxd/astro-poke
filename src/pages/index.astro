@@ -1,0 +1,24 @@
+---
+// codigo server side only - solo se vera en momento de construccion - Build
+import type { PokemonListResponse } from '../interfaces/pokemon-list.response';
+import PokeCard from '../components/pokemons/PokemonCard.astro';
+import MainLayout from '../layouts/MainLayout.astro';
+import Title from '@components/shared/Title.astro';
+
+const res = await fetch('https://pokeapi.co/api/v2/pokemon');
+const data = (await res.json()) as PokemonListResponse;
+// console.log('🚀 ~ data:', data);
+
+const title = 'Pokemon static | Home';
+---
+
+<MainLayout title={title}>
+	<Title>Listado</Title>
+
+	<section
+		aria-label="Listado de pokemons"
+		class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4"
+	>
+		{data.results.map(({ name, url }) => <PokeCard name={name} url={url} />)}
+	</section>
+</MainLayout>
